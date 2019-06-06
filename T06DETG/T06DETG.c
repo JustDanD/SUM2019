@@ -128,17 +128,20 @@ VOID Meth(VOID)
 		if (max_col != i)
 		{
 			for (y = i; y < N; y++)
-				Swap(&MAT[i][y], &MAT[max_col][y]);
+                          Swap(&MAT[y][i], &MAT[y][max_col]);
 			Det = -Det;
 		}
-		coef = MAT[i + 1][i] / MAT[i][i];
-		MAT[i + 1][i] = 0;
-
-		for (k = i + 1; k < N; k++)
-			MAT[i + 1][k] -= coef * MAT[i][k];
+                for (x = i + 1; x < N; x++) 
+                {
+                  coef = MAT[x][i] / MAT[i][i];
+		  MAT[x][i] = 0;
+                
+		  for (k = i + 1; k < N; k++)
+			MAT[x][k] -= coef * MAT[i][k];
+                }
+                Det *= MAT[i][i];
 	}
-	for (i = 0, j = 0; i < N, j < N; i++, j++)
-		Det *= MAT[i][j];
+
 }
 
 /*VOID mat(INT POSI, INT POSJ)
