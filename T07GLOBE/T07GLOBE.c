@@ -1,24 +1,54 @@
-/* FILE NAME: T03CLOCK.C
-   PRORAMMER: Daila Pimenov
-   DATE: 03.0.6.2019
-   PURPOSE: WinAPI
-*/
-#include <stdlib.h>
-#include <windows.h>
-#include <math.h>
-#include <time.h>
-#include <stdio.h>
 #include "header.h"
+#include <windows.h>
+#define WND_CLASS_NAME "My window class"
+#include <math.h>
+#include <stdlib.h>
+#include <time.h>
+extern VEC G[N][M];
 
-#define WND_CLASS_NAME "My class"
 
 LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam );
 
+INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, CHAR *CmdLine, INT ShawCmd )
+{
+  WNDCLASS wc;
+  HWND hWnd;
+  MSG msg;
 
+  wc.cbClsExtra = 0;
+  wc.cbWndExtra = 0;
+  wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
+  wc.hCursor = LoadCursor(NULL, IDI_ERROR);
+  wc.hIcon = LoadIcon(NULL, IDI_SHIELD);
+  wc.hInstance = hInstance;
+  wc.lpfnWndProc = MyWindowFunc;
+  wc.lpszClassName = WND_CLASS_NAME;
+  wc.lpszMenuName = NULL;
+  wc.style = CS_VREDRAW | CS_HREDRAW | CS_DBLCLKS;
+
+  if (!RegisterClass(&wc))
+  {
+    MessageBox(NULL, "Oh no", "ERROR", MB_OK);
+    return 0;
+  }
+  hWnd = CreateWindow(WND_CLASS_NAME, "OKNO", WS_OVERLAPPEDWINDOW,
+    CW_USEDEFAULT, CW_USEDEFAULT, 
+    CW_USEDEFAULT, CW_USEDEFAULT,
+    NULL, NULL, hInstance, NULL);
+  ShowWindow(hWnd, SW_SHOWNORMAL);
+  UpdateWindow(hWnd);
+
+  while(GetMessage(&msg, NULL, 0, 0))
+  {
+    TranslateMessage(&msg);
+    DispatchMessage(&msg);
+  }
+  return msg.wParam;
+}
 VOID FlipFullScreen( HWND hWnd )
 {
-  static BOOL IsFullScreen = FALSE; /* текущий режим */
-  static RECT SaveRC;               /* сохраненный размер */
+  static BOOL IsFullScreen = FALSE; 
+  static RECT SaveRC;
 
   if (!IsFullScreen)
   {
@@ -26,28 +56,18 @@ VOID FlipFullScreen( HWND hWnd )
     HMONITOR hmon;
     MONITORINFOEX moninfo;
 
-    /* сохраняем старый размер окна */
     GetWindowRect(hWnd, &SaveRC);
 
-    /* определяем в каком мониторе находится окно */
     hmon = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
 
-    /* получаем информацию для монитора */
     moninfo.cbSize = sizeof(moninfo);
     GetMonitorInfo(hmon, (MONITORINFO *)&moninfo);
 
-    /* переходим в полный экран */
-    /* для одного монитора:
-    rc.left = 0;
-    rc.top = 0;
-    rc.right = GetSystemMetrics(SM_CXSCREEN);
-    rc.bottom = GetSystemMetrics(SM_CYSCREEN);
-    */
     rc = moninfo.rcMonitor;
 
     AdjustWindowRect(&rc, GetWindowLong(hWnd, GWL_STYLE), FALSE);
 
-    SetWindowPos(hWnd, HWND_TOP, /* можно HWND_TOPMOST */
+    SetWindowPos(hWnd, HWND_TOP,
       rc.left, rc.top,
       rc.right - rc.left, rc.bottom - rc.top + 201,
       SWP_NOOWNERZORDER);
@@ -55,7 +75,6 @@ VOID FlipFullScreen( HWND hWnd )
   }
   else
   {
-    /* восстанавливаем размер окна */
     SetWindowPos(hWnd, HWND_TOP,
       SaveRC.left, SaveRC.top,
       SaveRC.right - SaveRC.left, SaveRC.bottom - SaveRC.top,
@@ -64,109 +83,60 @@ VOID FlipFullScreen( HWND hWnd )
   }
 } /* End of 'FlipFullScreen' function */
 
-void DrawEye( HDC hDC, INT x, INT y, INT r, INT r1, INT mx, INT my)
-{
-  HBRUSH hbr, hrbold;
-  DOUBLE t;
-  INT dx, dy;
-  SelectObject(hDC, GetStockObject(GRAY_BRUSH));
-  Ellipse(hDC, x - (r + 50), y + (r + 50), x + (r + 50), y - (r + 50));
-  SelectObject(hDC, GetStockObject(DC_BRUSH));
-  SetDCBrushColor(hDC, RGB(155, 123, 55));
-  Ellipse(hDC, x - r, y + r, x + r, y - r);
-  SelectObject(hDC, GetStockObject(BLACK_BRUSH));
-  t = (r - r1) / sqrt((mx - x) * (mx - x) + (my - y) * (my - y));
-  dx = (int)(mx - x) * t + x;
-  dy = (int)(my - y) * t + y; 
-  if (sqrt((mx - x) * (mx - x) + (my - y) * (my - y)) + r1 < r)
-  {
-    SelectObject(hDC, GetStockObject(BLACK_BRUSH));
-    Ellipse(hDC, mx - r1, my + r1,  mx + r1, my - r1);
-  }
-  else
-  {
-    SelectObject(hDC, GetStockObject(BLACK_BRUSH));
-    Ellipse(hDC, dx - r1, dy - r1,  dx + r1, dy + r1);
-  }
-
-}
-INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, CHAR *CmdLine, INT showCmd )
-{
-  WNDCLASS wc;
-  HWND hWnd;
-  MSG msg;
-
-  wc.style =  CS_DROPSHADOW;
-  wc.cbClsExtra = 0;
-  wc.cbWndExtra = 0;
-  wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-  wc.hCursor = LoadCursor(NULL, IDC_HAND);
-  wc.hIcon = LoadIcon(NULL, IDI_ERROR);
-  wc.lpszClassName = WND_CLASS_NAME;
-  wc.lpszMenuName = NULL;
-  wc.hInstance = hInstance;
-  wc.lpfnWndProc = MyWindowFunc;
-  
-  if (!RegisterClass(&wc))
-  {
-    MessageBox(NULL, "Error", "ERROR", MB_OK);
-    return 0;
-  }
-
-  hWnd = CreateWindow( WND_CLASS_NAME, "Zoka", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, NULL);
-
-  ShowWindow(hWnd, SW_SHOWNORMAL);
-  UpdateWindow(hWnd);
-
-  while (GetMessage(&msg, NULL, 0, 0))
-  {
-    TranslateMessage(&msg);
-    DispatchMessage(&msg);
-  }
-  return msg.wParam;
-}
 
 LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam )
-{   
-  HDC hDC;
+{
+  HDC hDc;
+  BYTE Keys[256];
+  static int w, h;
   static HDC hMemDC;
   static HBITMAP hBm;
-  POINT pt;
-  BITMAP bm;
-  INT i;
   SYSTEMTIME st;
-  static INT w, h;
-  BYTE Keys[256];
+  PAINTSTRUCT ps;
+  INT x, y;
 
   switch (Msg)
   {
-  case WM_CREATE: 
-   SetTimer(hWnd, 47, 30, NULL);
-   hDC = GetDC(hWnd);
-   hMemDC = CreateCompatibleDC(hDC);
-   ReleaseDC(hWnd, hDC);
+  case WM_CREATE:
+    SetTimer(hWnd, 47, 50, NULL);
+    hDc = GetDC(hWnd);
+    hMemDC = CreateCompatibleDC(hDc);
+    ReleaseDC(hWnd, hDc);
+    GLOBE();
+    return 0;
 
-   return 0;
+  case WM_LBUTTONDBLCLK:
+    FlipFullScreen(hWnd);
+    return 0;
   case WM_SIZE:
     w = LOWORD(lParam);
     h = HIWORD(lParam);
+
     if (hBm != NULL)
       DeleteObject(hBm);
-    hDC = GetDC(hWnd);
-    hBm = CreateCompatibleBitmap(hDC, w, h);
+    hDc = GetDC(hWnd);
+    hBm = CreateCompatibleBitmap(hDc, w, h);
     SelectObject(hMemDC, hBm);
-    ReleaseDC(hWnd, hDC);
-  return 0;
+    return 0;
   case WM_TIMER:
     GetLocalTime(&st);
-    hDC = GetDC(hWnd);
+
+    hDc = GetDC(hWnd);
+    SelectObject(hMemDC, hBm);
+    SelectObject(hMemDC, GetStockObject(WHITE_BRUSH));
     Rectangle(hMemDC, 0, 0, w, h);
-    SelectObject(hDC, GetStockObject(BLACK_BRUSH));
-    DrawSphere(hMemDC, 1000, 500, 400);
-    BitBlt(hDC, 0, 0, w, h, hMemDC, 0, 0, SRCCOPY);
-    ReleaseDC(hWnd,hDC);
+
+    DRAW(hMemDC, w, h);
+    for (y = 0; y < N; y++)
+        for (x = 0; x < M; x++)
+        {
+            G[y][x] = ROT_X(G[y][x], 2);
+            G[y][x] = ROT_Y(G[y][x], 2);
+        }
+    BitBlt(hDc, 0, 0, w , h, hMemDC, 0, 0, SRCCOPY);
+    ReleaseDC(hWnd, hDc);
     return 0;
-  case WM_KEYDOWN:
+case WM_KEYDOWN:
     GetKeyboardState(Keys);
     if (Keys['F'] & 0x80
       )

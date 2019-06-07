@@ -1,73 +1,99 @@
-#include <stdlib.h>
-#include <windows.h>
-#include <math.h>
-#include <time.h>
-#include <stdio.h>
 #include "header.h"
+#include <math.h>
 
-#define PI 3.14159265358979323846
-#define N 13
-#define M 25
+VEC G[N][M];
 
-typedef struct 
+VOID GLOBE( void )
 {
-  DOUBLE X, Y, Z;
-} VEC;
+  INT i, j;
+  DOUBLE t, p, x, y, z, R = 300;
 
-VEC Points[M][N];
-
-
-VEC RotX( VEC Inp, INT Angel)
-{
-  INT a, b;
-  VEC pot;
-  DOUBLE ang = Angel / 180 * 2 * PI;
- 
-  pot.X = Inp.X;
-  pot.Y = Inp.Y * cos(ang) + Inp.Z * sin(ang); 
-  pot.Z = Inp.Y * sin(ang) - Inp.Z * cos(ang);
-  return pot;
+  for (i = 0, t = 0; i < N; i++, t += PI / (N - 1))
+    for (j = 0, p = 0; j < M; j++, p += 2 * PI / (M - 1))
+     {
+        x = R * cos(p) * sin(t);
+        y = R * cos(t);
+        z = R * sin(p) * sin(t);
+        
+        G[i][j].X = x;
+        G[i][j].Y = y;
+        G[i][j].Z = z;
+     }
 }
 
-VEC RotY( VEC Inp, INT Angel)
+
+
+
+VOID DRAW(HDC hDC, INT w, INT h)
 {
-  INT a, b;
-  VEC pot;
-  DOUBLE ang = Angel / 180 * 2 * PI;
- 
-  pot.Z = Inp.Z;
-  pot.X = Inp.X * cos(ang) + Inp.Y * sin(ang); 
-  pot.Y = Inp.X * sin(ang) - Inp.Y * cos(ang);
-  return pot;
+    INT x, y, i, j, Xc = w / 2, Yc = h / 2;
+
+    /*for (i = 0; i < N; i++)
+        for (j = 0; j < M; j++)
+        {
+            VEC p = G[i][j];
+            x = (INT)p.X + w / 2;
+            y = (INT)p.Y + h / 2;
+            SelectObject(hDC, GetStockObject(NULL_PEN));
+            SelectObject(hDC, GetStockObject(DC_BRUSH));
+            SetDCBrushColor(hDC, RGB(75, 125, 175));
+            Ellipse(hDC, x - 4, y - 4, x + 4, y + 4);
+        }*/
+    SelectObject(hDC, GetStockObject(DC_PEN));
+    SetDCPenColor(hDC, RGB(200, 225, 175));
+    SelectObject(hDC, GetStockObject(DC_BRUSH));
+    for (i = 0; i < N - 1; i++)
+        for (j = 0; j < M -1; j++)
+        {
+            POINT ps[4];
+            DOUBLE s = 0;
+            ps[0].x = G[i][j].X + Xc, ps[0].y = G[i][j].Y  + Yc;
+            ps[1].x = G[i][j + 1].X + Xc, ps[1].y = G[i][j + 1].Y + Yc;
+            ps[2].x = G[i + 1][j + 1].X + Xc, ps[2].y = G[i + 1][j + 1].Y + Yc;
+            ps[3].x = G[i + 1][j].X + Xc, ps[3].y = G[i + 1][j].Y + Yc;
+            for (x = 0; x < 4; x++)
+              s += (ps[x].x - ps[(x + 1) % 3].x) * (ps[x].y + ps[(x + 1) % 3].y);
+            if ((ps[0].x - ps[1].x) * (ps[0].y + ps[1].y) +
+                (ps[1].x - ps[2].x) * (ps[1].y + ps[2].y) +
+                (ps[2].x - ps[3].x) * (ps[2].y + ps[3].y) +
+                (ps[3].x - ps[0].x) * (ps[3].y + ps[0].y) 
+                 >= 0)
+            {
+               SetDCBrushColor(hDC, RGB(0, 125, 221));
+               Polygon(hDC, ps, 4);
+            }
+            else
+            {
+              SetDCBrushColor(hDC, RGB(0, 0, 0));
+              Polygon(hDC, ps, 4);
+            }
+        }
+
+    
 }
 
-VOID GenSphere( INT X, INT Y, INT R)
-{
-  INT xs = X, ys = Y, zs = 0, a = 0, b = 0;
-  DOUBLE  tet, alp;
 
-  for (b = 0, tet = 0; b < M; b++, tet += 2 * PI / M)
-  {
-    for (a = 0, alp = 0; a < N; a++, alp += 2 * PI / N)
-    {
-      Points[b][a].X = X + R * cos(tet) * sin(alp);
-      Points[b][a].Y = Y + R * sin(tet) * sin(alp); 
-      Points[b][a].Z = R;
-    }
-  }
-}
-VOID DrawSphere(HDC hDC,  INT X, INT Y, INT R)
+VEC ROT_Y(VEC p, DOUBLE angle)
 {
-  INT xs = 0, ys = 0, a = 0, b = 0;
+    DOUBLE a = angle * PI / 180, si = sin(a), co = cos(a);
+    VEC r;
 
-  DOUBLE t = clock() / CLOCKS_PER_SEC;
-  GenSphere(X, Y, R);
-  for (b = 0; b < M; b++)
-  {
-    for (a = 0; a < N; a++)
-    {
-      Points[b][a] = RotY(Points[b][a], 45 * t);
-      Ellipse(hDC, Points[b][a].X - 1, Points[b][a].Y - 1, Points[b][a].X + 1, Points[b][a].Y + 10);
-    }
-  }
+    r.X = p.X * co - p.Y * si;
+    r.Y = p.X * si + p.Y * co;
+    r.Z = p.Z;
+
+    return r;
 }
+
+VEC ROT_X(VEC p, DOUBLE angle)
+{
+    DOUBLE a = angle * PI / 180, si = sin(a), co = cos(a);
+    VEC r;
+
+    r.Y = p.Y  * co - p.Z * si;
+    r.Z = p.Y * si + p.Z * co;
+    r.X = p.X;
+
+    return r;
+}
+
