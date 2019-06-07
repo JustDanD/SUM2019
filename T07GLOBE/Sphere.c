@@ -1,4 +1,5 @@
 #include "header.h"
+#include <stdio.h>
 #include <math.h>
 
 VEC G[N][M];
@@ -11,9 +12,9 @@ VOID GLOBE( void )
   for (i = 0, t = 0; i < N; i++, t += PI / (N - 1))
     for (j = 0, p = 0; j < M; j++, p += 2 * PI / (M - 1))
      {
-        x = R * cos(p) * sin(t);
-        y = R * cos(t);
-        z = R * sin(p) * sin(t);
+        x = R * cos(p) /** cos(t) */ * sin(t) /*/** sin(p)*/;
+        y = R * cos(t) /** cos(p) * tan(p) * tan(t)*/;
+        z = R * sin(p) * sin(t) /* tan(t)*/;
         
         G[i][j].X = x;
         G[i][j].Y = y;
@@ -27,7 +28,9 @@ VOID GLOBE( void )
 VOID DRAW(HDC hDC, INT w, INT h)
 {
     INT x, y, i, j, Xc = w / 2, Yc = h / 2;
-
+    CHAR Buf[100];
+    GLB_TimerResponse();
+    TextOut(hDC, 8, 8, Buf, sprintf(Buf, "%.3f", GLB_FPS));
     /*for (i = 0; i < N; i++)
         for (j = 0; j < M; j++)
         {
@@ -42,6 +45,12 @@ VOID DRAW(HDC hDC, INT w, INT h)
     SelectObject(hDC, GetStockObject(DC_PEN));
     SetDCPenColor(hDC, RGB(200, 225, 175));
     SelectObject(hDC, GetStockObject(DC_BRUSH));
+    for (y = 0; y < N; y++)
+        for (x = 0; x < M; x++)
+        {
+          G[y][x] = ROT_X(G[y][x], 0.7 * sin(GLB_Time));
+            G[y][x] = ROT_Y(G[y][x], 0 * sin(GLB_Time));
+        }
     for (i = 0; i < N - 1; i++)
         for (j = 0; j < M -1; j++)
         {

@@ -38,11 +38,15 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, CHAR *CmdLine,
   ShowWindow(hWnd, SW_SHOWNORMAL);
   UpdateWindow(hWnd);
 
-  while(GetMessage(&msg, NULL, 0, 0))
-  {
-    TranslateMessage(&msg);
-    DispatchMessage(&msg);
-  }
+  while (TRUE)
+      if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+      {
+        if (msg.message == WM_QUIT)
+          break;
+        DispatchMessage(&msg);
+      }
+      else
+        SendMessage(hWnd, WM_TIMER, 47, 0);
   return msg.wParam;
 }
 VOID FlipFullScreen( HWND hWnd )
@@ -91,6 +95,7 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
   static int w, h;
   static HDC hMemDC;
   static HBITMAP hBm;
+  MSG msg;
   SYSTEMTIME st;
   PAINTSTRUCT ps;
   INT x, y;
@@ -98,10 +103,11 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
   switch (Msg)
   {
   case WM_CREATE:
-    SetTimer(hWnd, 47, 50, NULL);
+    SetTimer(hWnd, 47, 1000, NULL);
     hDc = GetDC(hWnd);
     hMemDC = CreateCompatibleDC(hDc);
     ReleaseDC(hWnd, hDc);
+    
     GLOBE();
     return 0;
 
@@ -117,6 +123,7 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
     hDc = GetDC(hWnd);
     hBm = CreateCompatibleBitmap(hDc, w, h);
     SelectObject(hMemDC, hBm);
+    
     return 0;
   case WM_TIMER:
     GetLocalTime(&st);
@@ -127,12 +134,6 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
     Rectangle(hMemDC, 0, 0, w, h);
 
     DRAW(hMemDC, w, h);
-    for (y = 0; y < N; y++)
-        for (x = 0; x < M; x++)
-        {
-            G[y][x] = ROT_X(G[y][x], 2);
-            G[y][x] = ROT_Y(G[y][x], 2);
-        }
     BitBlt(hDc, 0, 0, w , h, hMemDC, 0, 0, SRCCOPY);
     ReleaseDC(hWnd, hDc);
     return 0;
