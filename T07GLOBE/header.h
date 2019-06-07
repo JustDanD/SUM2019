@@ -1,14 +1,9 @@
-#define PI 3.14159265358979323846
+/*#define PI 3.14159265358979323846
 #include <windows.h>
-#define N 25
-#define M 30
+#define K 25
+#define L 30
 
-
-typedef struct
-{
-  DOUBLE X, Y, Z;
-}VEC;
-
+#include "MTH.h"
 VOID GLOBE( void );
 VOID DRAW (HDC hDC, INT w, INT h);
 VEC ROT_X(VEC p, DOUBLE angle);
@@ -24,4 +19,4 @@ extern LONG StartTime,
        OldTime,       
        PauseTime,     
        OldFPSTime,    
-       FrameCount;
+       FrameCount;  */

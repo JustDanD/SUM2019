@@ -206,6 +206,10 @@
 				RelativePath=".\header.h"
 				>
 			</File>
+			<File
+				RelativePath=".\MTH.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
