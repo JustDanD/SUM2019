@@ -98,7 +98,7 @@ __inline VEC VecMulMatr( VEC V, MATR M )
 
 __inline VEC PointTransform( VEC V, MATR M )
 {
- return VecSet(V.X * M.A[0][0] + V.X * M.A[0][1] + V.X * M.A[0][2] + + V.X * M.A[0][3], V.Y * M.A[1][0] + V.Y * M.A[1][1] + V.Y * M.A[1][2] + + V.Y * M.A[1][3], V.Z * M.A[2][0] + V.Z * M.A[2][1] + V.Z * M.A[2][2] + + V.Z * M.A[2][3]);
+ return VecSet(V.X * M.A[0][0] + V.X * M.A[0][1] + V.X * M.A[0][2] +  V.X * M.A[0][3], V.Y * M.A[1][0] + V.Y * M.A[1][1] + V.Y * M.A[1][2] +  V.Y * M.A[1][3], V.Z * M.A[2][0] + V.Z * M.A[2][1] + V.Z * M.A[2][2] + + V.Z * M.A[2][3]);
 }
 
 __inline VEC VectorTransform( VEC V, MATR M )
@@ -169,7 +169,7 @@ __inline MATR MatrScale( VEC S )
   return SetMatr(S.X, 0, 0, 0, 0, S.Y, 0, 0, 0, 0, S.Z, 0, 0, 0, 0, 1);
 }
 
-MATR MatrRotateX( DBL AngleInDegree )
+__inline MATR MatrRotateX( DBL AngleInDegree )
 {
   return SetMatr(1, 0, 0, 0,
     0, cos(D2R(AngleInDegree)), sin(D2R(AngleInDegree)), 0,
@@ -274,6 +274,7 @@ __inline DBL MatrDeterm( MATR M )
                                M.A[3][0], M.A[3][1], M.A[3][2]);
 }
 
+__inline 
 MATR MatrInverse( MATR M )
 {
   MATR r;

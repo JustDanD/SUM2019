@@ -118,7 +118,7 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
     hMemDC = CreateCompatibleDC(hDc);
     ReleaseDC(hWnd, hDc);
     
-   //GLOBE();
+   GLOBE();
     return 0;
 
   case WM_LBUTTONDBLCLK:
@@ -143,7 +143,7 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
     SelectObject(hMemDC, GetStockObject(WHITE_BRUSH));
     Rectangle(hMemDC, 0, 0, w, h);
 
-    //DRAW(hMemDC, w, h);
+    DRAW(hMemDC, w, h);
     BitBlt(hDc, 0, 0, w , h, hMemDC, 0, 0, SRCCOPY);
     ReleaseDC(hWnd, hDc);
     return 0;
