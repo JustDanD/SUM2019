@@ -1,20 +1,29 @@
 #include "header.h"
+
 #include <windows.h>
 #define WND_CLASS_NAME "My window class"
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
 #include "MTH.h"
-//extern VEC G[N][M];
+
+
 
 
 LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam );
 
 INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, CHAR *CmdLine, INT ShawCmd )
 {
-  /*WNDCLASS wc;
+  WNDCLASS wc;
   HWND hWnd;
   MSG msg;
+  MATR m =
+  {
+    {{1, 1, 0, 0},
+    {1, 0, 1, 1},
+    {0, 0, 1, 0},
+    {1, 4, 4, 1}}
+  }, m1, m2;
 
   wc.cbClsExtra = 0;
   wc.cbWndExtra = 0;
@@ -48,22 +57,7 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, CHAR *CmdLine,
       }
       else
         SendMessage(hWnd, WM_TIMER, 47, 0);
-  return msg.wParam;    */
-
- /* MATR m =
-  {
-    {1, 1, 1, 0},
-    {1, 1, 2, 0},
-    {1, 2, 1, 1},
-    {2, 1, 1, 1}
-  }, m1, m2;
-
-  m1 = MatrInverse(m);
-  m2 = MatrMulMatr(m, m1);
-  m2 = MatrMulMatr(m1, m);
-
-  m = MatrRotate(90, 0, 1, 0);
-  m1 = MatrInverse(m); */
+  return msg.wParam;    
 }
 VOID FlipFullScreen( HWND hWnd )
 {
@@ -124,7 +118,7 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
     hMemDC = CreateCompatibleDC(hDc);
     ReleaseDC(hWnd, hDc);
     
-   // GLOBE();
+   //GLOBE();
     return 0;
 
   case WM_LBUTTONDBLCLK:
@@ -149,7 +143,7 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
     SelectObject(hMemDC, GetStockObject(WHITE_BRUSH));
     Rectangle(hMemDC, 0, 0, w, h);
 
-   // DRAW(hMemDC, w, h);
+    //DRAW(hMemDC, w, h);
     BitBlt(hDc, 0, 0, w , h, hMemDC, 0, 0, SRCCOPY);
     ReleaseDC(hWnd, hDc);
     return 0;

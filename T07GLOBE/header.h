@@ -1,15 +1,15 @@
-/*#define PI 3.14159265358979323846
+#ifndef _HEADER_H_
+#define _HEADER_H
 #include <windows.h>
-#define K 25
-#define L 30
+#endif
 
-#include "MTH.h"
+
 VOID GLOBE( void );
 VOID DRAW (HDC hDC, INT w, INT h);
-VEC ROT_X(VEC p, DOUBLE angle);
-VEC ROT_Y(VEC p, DOUBLE angle);
+
 VOID GLB_TimerInit( VOID );
 VOID GLB_TimerResponse( VOID );
+
 
 extern DOUBLE GLB_Time,      
       GLB_DeltaTime, 
@@ -19,4 +19,4 @@ extern LONG StartTime,
        OldTime,       
        PauseTime,     
        OldFPSTime,    
-       FrameCount;  */
+       FrameCount;  

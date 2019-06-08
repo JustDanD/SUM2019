@@ -2,13 +2,34 @@
 
 #include <stdio.h>
 #include <math.h>
-#include "header.h"
-#include "MTH.h"
 
-#define K 32
-#define L 40
+
+#include "header.h"
 VEC G[K][L];
 
+VEC ROT_Y(VEC p, DOUBLE aKgle)
+{
+    DOUBLE a = aKgle * PI / 180, si = sin(a), co = cos(a);
+    VEC r;
+
+    r.X = p.X * co - p.Y * si;
+    r.Y = p.X * si + p.Y * co;
+    r.Z = p.Z;
+
+    return r;
+}
+
+VEC ROT_X(VEC p, DOUBLE aKgle)
+{
+    DOUBLE a = aKgle * PI / 180, si = sin(a), co = cos(a);
+    VEC r;
+
+    r.Y = p.Y  * co - p.Z * si;
+    r.Z = p.Y * si + p.Z * co;
+    r.X = p.X;
+
+    return r;
+} 
 
 VOID GLOBE( void )
 {
@@ -51,7 +72,12 @@ VOID DRAW(HDC hDC, INT w, INT h)
     SelectObject(hDC, GetStockObject(DC_PEN));
     SetDCPenColor(hDC, RGB(200, 225, 175));
     SelectObject(hDC, GetStockObject(DC_BRUSH));
-
+    for (y = 0; y < K; y++)
+        for (x = 0; x < L; x++)
+        {
+          G[y][x] = ROT_X(G[y][x], 3 * sin(GLB_Time));
+            G[y][x] = ROT_Y(G[y][x], 3 * sin(GLB_Time));
+        }
     for (i = 0; i < K - 1; i++)
         for (j = 0; j < L -1; j++)
         {
@@ -78,7 +104,8 @@ VOID DRAW(HDC hDC, INT w, INT h)
               Polygon(hDC, ps, 4);
             }
         }
-   
+
+    
 }
 
 
