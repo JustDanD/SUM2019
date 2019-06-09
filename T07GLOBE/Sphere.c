@@ -1,3 +1,9 @@
+/* *FILE NAME: SPHERE.C
+   *PRORAMMER: Danila Pimenov
+   *DATE: 09.06.2019
+   *PURPOSE: WinAPI
+*/
+
 #include <stdio.h>
 #include <math.h>
 #include "TIMER.h"
