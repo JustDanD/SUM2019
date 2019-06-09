@@ -1,45 +1,66 @@
 #include <windows.h>
 #include <time.h>
+#include "TIMER.H"
 #include "header.h"
 
-  DOUBLE GLB_Time,      
-      GLB_DeltaTime, 
-      GLB_FPS;        
-  BOOL GLB_IsPause;   
-  LONG StartTime,     
-       OldTime,       
-       PauseTime,     
-       OldFPSTime,    
-       FrameCount;    
+LARGE_INTEGER t;
 
-  VOID GLB_TimerInit( VOID )      
+static UINT64
+StartTime,    /* Start program time */
+OldTime,      /* Previous frame time */
+OldTimeFPS,   /* Old time FPS measurement */
+PauseTime,    /* Time during pause period */
+TimePerSec,   /* Timer resolution */
+FrameCounter;
+
+DOUBLE
+GlobalTime, GlobalDeltaTime, /* Global time and interframe interval */
+Time, DeltaTime,             /* Time with pause and interframe interval */
+FPS;                         /* Frames per second value */
+BOOL
+IsPause;
+
+VOID TimerInit(VOID)
+{
+  LARGE_INTEGER t;
+
+  QueryPerformanceFrequency(&t);
+  TimePerSec = t.QuadPart;
+  QueryPerformanceCounter(&t);
+  StartTime = OldTime = OldTimeFPS = t.QuadPart;
+  FrameCounter = 0;
+  IsPause = FALSE;
+  FPS = 30.0;
+  PauseTime = 0;
+}
+
+VOID TimerResponse(VOID)
+{
+  LARGE_INTEGER t;
+
+  QueryPerformanceCounter(&t);
+  /* Global time */
+  GlobalTime = (DOUBLE)(t.QuadPart - StartTime) / TimePerSec;
+  GlobalDeltaTime = (DOUBLE)(t.QuadPart - OldTime) / TimePerSec;
+
+  /* Time with pause */
+  if (IsPause)
   {
-    StartTime = OldTime = OldFPSTime = clock();
-    PauseTime = 0;
-    FrameCount = 0;
-    GLB_IsPause = FALSE;
+    DeltaTime = 0;
+    PauseTime += t.QuadPart - OldTime;
   }
-
-  VOID GLB_TimerResponse( VOID ) 
+  else
   {
-    LONG t = clock();
-
-    if (!GLB_IsPause)
-    {
-      GLB_Time = (DOUBLE)(t - PauseTime - StartTime) / CLOCKS_PER_SEC;
-      GLB_DeltaTime = (DOUBLE)(t - OldTime) / CLOCKS_PER_SEC;
-    }
-    else
-    {
-      PauseTime += t - OldTime;
-      GLB_DeltaTime = 0;
-    }
-    FrameCount++;
-    if (t - OldFPSTime > CLOCKS_PER_SEC)
-    {
-      GLB_FPS = FrameCount / ((DOUBLE)(t - OldFPSTime) / CLOCKS_PER_SEC);
-      OldFPSTime = t;
-      FrameCount = 0;
-    }
-    OldTime = t;
+    DeltaTime = GlobalDeltaTime;
+    Time = (DOUBLE)(t.QuadPart - PauseTime - StartTime) / TimePerSec;
   }
+  /* FPS */
+  FrameCounter++;
+  if (t.QuadPart - OldTimeFPS > TimePerSec)
+  {
+    FPS = FrameCounter * TimePerSec / (DOUBLE)(t.QuadPart - OldTimeFPS);
+    OldTimeFPS = t.QuadPart;
+    FrameCounter = 0;
+  }
+  OldTime = t.QuadPart;
+}

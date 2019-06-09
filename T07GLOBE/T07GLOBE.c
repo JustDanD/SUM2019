@@ -5,14 +5,12 @@
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
+#include "TIMER.h"
 #include "MTH.h"
 
+LRESULT CALLBACK MyWindowFunc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 
-
-
-LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam );
-
-INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, CHAR *CmdLine, INT ShawCmd )
+INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, CHAR *CmdLine, INT ShawCmd)
 {
   WNDCLASS wc;
   HWND hWnd;
@@ -35,33 +33,33 @@ INT WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, CHAR *CmdLine,
   wc.lpszClassName = WND_CLASS_NAME;
   wc.lpszMenuName = NULL;
   wc.style = CS_VREDRAW | CS_HREDRAW | CS_DBLCLKS;
-
+  TimerInit();
   if (!RegisterClass(&wc))
   {
     MessageBox(NULL, "Oh no", "ERROR", MB_OK);
     return 0;
   }
   hWnd = CreateWindow(WND_CLASS_NAME, "OKNO", WS_OVERLAPPEDWINDOW,
-    CW_USEDEFAULT, CW_USEDEFAULT, 
-    CW_USEDEFAULT, CW_USEDEFAULT,
+    -1200, 0,
+    900, 900,
     NULL, NULL, hInstance, NULL);
   ShowWindow(hWnd, SW_SHOWNORMAL);
   UpdateWindow(hWnd);
 
   while (TRUE)
-      if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-      {
-        if (msg.message == WM_QUIT)
-          break;
-        DispatchMessage(&msg);
-      }
-      else
-        SendMessage(hWnd, WM_TIMER, 47, 0);
-  return msg.wParam;    
+    if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+    {
+      if (msg.message == WM_QUIT)
+        break;
+      DispatchMessage(&msg);
+    }
+    else
+      SendMessage(hWnd, WM_TIMER, 47, 0);
+  return msg.wParam;
 }
-VOID FlipFullScreen( HWND hWnd )
+VOID FlipFullScreen(HWND hWnd)
 {
-  static BOOL IsFullScreen = FALSE; 
+  static BOOL IsFullScreen = FALSE;
   static RECT SaveRC;
 
   if (!IsFullScreen)
@@ -97,8 +95,7 @@ VOID FlipFullScreen( HWND hWnd )
   }
 } /* End of 'FlipFullScreen' function */
 
-
-LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam )
+LRESULT CALLBACK MyWindowFunc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
   HDC hDc;
   BYTE Keys[256];
@@ -117,8 +114,8 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
     hDc = GetDC(hWnd);
     hMemDC = CreateCompatibleDC(hDc);
     ReleaseDC(hWnd, hDc);
-    
-   GLOBE();
+
+    GLOBE();
     return 0;
 
   case WM_LBUTTONDBLCLK:
@@ -133,7 +130,7 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
     hDc = GetDC(hWnd);
     hBm = CreateCompatibleBitmap(hDc, w, h);
     SelectObject(hMemDC, hBm);
-    
+
     return 0;
   case WM_TIMER:
     GetLocalTime(&st);
@@ -144,29 +141,29 @@ LRESULT CALLBACK MyWindowFunc( HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
     Rectangle(hMemDC, 0, 0, w, h);
 
     DRAW(hMemDC, w, h);
-    BitBlt(hDc, 0, 0, w , h, hMemDC, 0, 0, SRCCOPY);
+    BitBlt(hDc, 0, 0, w, h, hMemDC, 0, 0, SRCCOPY);
     ReleaseDC(hWnd, hDc);
     return 0;
-case WM_KEYDOWN:
+  case WM_KEYDOWN:
     GetKeyboardState(Keys);
     if (Keys['F'] & 0x80
       )
       FlipFullScreen(hWnd);
-  return 0;
-  
-  case WM_CLOSE:    
-     
+    return 0;
+
+  case WM_CLOSE:
+
     if (MessageBox(NULL, "Are you sure?", "Quit", MB_YESNO) == IDYES)
     {
       DeleteObject(hBm);
-    DeleteDC(hMemDC);
-    KillTimer(hWnd, 47);
-    PostQuitMessage(0);
+      DeleteDC(hMemDC);
+      KillTimer(hWnd, 47);
+      PostQuitMessage(0);
       return 0;
-    }   
-    else 
+    }
+    else
       Msg = WM_ACTIVATE;
   }
-  
+
   return DefWindowProc(hWnd, Msg, wParam, lParam);
 }

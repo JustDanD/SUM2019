@@ -15,11 +15,12 @@
 	</Platforms>
 	<ToolFiles>
 	</ToolFiles>
+	C:\Users\steam\source\repos\JustDanD\SUM2019\T06DETG
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="D:\$(UserName)\$(ProjectName)\$(ConfigurationName)"
-			IntermediateDirectory="D:\$(UserName)\$(ProjectName)\$(ConfigurationName)"
+			OutputDirectory="С:\$Users\$(UserName)\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory="С:\$(UserName)\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			CharacterSet="2"
@@ -178,10 +179,6 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<File
-				RelativePath=".\T06DETG.c"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
