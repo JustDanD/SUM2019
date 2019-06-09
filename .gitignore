@@ -328,3 +328,6 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+/T04PERM/T04PERM.vcxproj
+/T04PERM/T04PERM.vcxproj.filters
+/T06DETG/T06DETG.vcxproj

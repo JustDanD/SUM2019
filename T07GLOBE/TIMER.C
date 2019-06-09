@@ -20,7 +20,7 @@ FPS;                         /* Frames per second value */
 BOOL
 IsPause;
 
-VOID TimerInit(VOID)
+VOID TimerInit(VOID) //Timer initialization 
 {
   LARGE_INTEGER t;
 
@@ -34,7 +34,7 @@ VOID TimerInit(VOID)
   PauseTime = 0;
 }
 
-VOID TimerResponse(VOID)
+VOID TimerResponse(VOID) // Timer update
 {
   LARGE_INTEGER t;
 

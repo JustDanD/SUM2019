@@ -1,3 +1,9 @@
+/* *FILE NAME: T07GLOBE.C
+   *PRORAMMER: Danila Pimenov
+   *DATE: 09.06.2019
+   *PURPOSE: WinAPI
+*/
+
 #include "header.h"
 
 #include <windows.h>

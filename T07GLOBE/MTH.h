@@ -1,3 +1,9 @@
+/* *FILE NAME: MTH.H
+   *PRORAMMER: Danila Pimenov
+   *DATE: 09.06.2019
+   *PURPOSE: WinAPI
+*/
+
 #ifndef _MATH_H
 #define _MATH_H
 #include <windows.h>
