@@ -1,0 +1,5 @@
+/* *FILE NAME: RNDPRIM.C
+   *PRORAMMER: Danila Pimenov
+   *DATE: 10.06.2019
+   *PURPOSE: WinAPI
+*/
