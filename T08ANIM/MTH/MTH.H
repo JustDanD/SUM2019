@@ -12,7 +12,7 @@
 #define PI 3.14159265358979323846
 #define D2R(A) ((A) * (PI / 180.0))
 #define Degree2Radian(a) D2R(a)
-
+#define MatrMulMatr3(A, B, C) MatrMulMatr(MatrMulMatr(A, B), C)
 typedef double DBL;
 
 typedef struct
@@ -95,7 +95,8 @@ __inline DBL VecLen(VEC V)
 
 __inline VEC VectorMulMatr(VEC V, MATR M)
 {
-  return VecSet((V.X * M.A[0][0] + V.Y * M.A[1][0] + V.Z * M.A[2][0] + M.A[3][0]) / M.A[3][0], (V.X * M.A[0][1] + V.Y * M.A[1][1] + V.Z * M.A[2][1] + M.A[3][1]) / M.A[3][1], (V.X * M.A[0][2] + V.Y * M.A[1][2] + V.Z * M.A[2][2] + + M.A[3][2]) / M.A[3][2]);
+  DBL w = V.X * M.A[0][3] + V.Y * M.A[1][3] +  V.Z * M.A[2][3] + M.A[3][3];    
+  return VecSet((V.X * M.A[0][0] + V.Y * M.A[1][0] + V.Z * M.A[2][0] + M.A[3][0]) / w, (V.X * M.A[0][1] + V.Y * M.A[1][1] + V.Z * M.A[2][1] + M.A[3][1]) / w, (V.X * M.A[0][2] + V.Y * M.A[1][2] + V.Z * M.A[2][2] + + M.A[3][2]) / w);
 }
 
 __inline VEC PointTransform(VEC V, MATR M)

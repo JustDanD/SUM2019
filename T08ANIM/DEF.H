@@ -3,7 +3,7 @@
  *               Base definitions.
  * PROGRAMMER  : Vitaly A. Galinsky.
  * LAST UPDATE : 10.06.2019.
- * NOTE        : Module prefix 'VG4'.
+ * NOTE        : Module prefix 'dp3'.
  */
 
 #ifndef __DEF_H_

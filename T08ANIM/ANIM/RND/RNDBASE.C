@@ -47,8 +47,12 @@ VOID DP3_RndResize( INT W, INT H )
 VOID DP3_RndStart( VOID )
 {
   SelectObject(DP3_hDCRndFrame, DP3_hBmRndFrame);
-  SelectObject(DP3_hDCRndFrame, GetStockObject(GRAY_BRUSH));
+  SelectObject(DP3_hDCRndFrame, GetStockObject(WHITE_BRUSH));
   Rectangle(DP3_hDCRndFrame, 0, 0, DP3_RndFrameW, DP3_RndFrameW);
+
+
+  SelectObject(DP3_hDCRndFrame, GetStockObject(NULL_BRUSH));
+   SelectObject(DP3_hDCRndFrame, GetStockObject(BLACK_PEN));
 }
 
 /*VOID DP3_RndEnd( VOID )

@@ -4,6 +4,25 @@
 
 VOID DP3_RndInit( HWND hWnd );
 
+
+typedef struct tagdp3VERTEX
+{
+  VEC P;  /* Vertex position */
+} dp3VERTEX;
+
+
+typedef struct tagdp3PRIM
+{
+  dp3VERTEX *V; /* Vertex attributes array */
+  INT NumOfV;   /* Number of vertices */
+
+  INT *I;       /* Index array (for trimesh - by 3 ones) */
+  INT NumOfI;   /* Number of indices */
+
+  MATR Trans;   /* Additional transformation matrix */
+} dp3PRIM;
+
+
 extern DBL
   DP3_RndProjSize,  /* Project plane fit square */
   DP3_RndProjDist,  /* Distance to project plane from viewer (near) */
@@ -25,4 +44,8 @@ VOID DP3_RndCopyFrame( HDC hDC );
 VOID DP3_RndStart( VOID );
 VOID DP3_RndResize( INT W, INT H );
 VOID DP3_RndClose( VOID );
+BOOL DP3_RndPrimLoad( dp3PRIM *Pr, CHAR *FileName );
+VOID DP3_RndPrimDraw( dp3PRIM *Pr, MATR World );
+VOID DP3_RndPrimFree( dp3PRIM *Pr );
+BOOL DP3_RndPrimCreate( dp3PRIM *Pr, INT NoofV, INT NoofI );
 #endif 

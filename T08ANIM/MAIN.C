@@ -13,7 +13,7 @@
 #include "Z:/SUM2019/T08ANIM/DEF.H"
 #include "ANIM/RND/RND.H" 
 #include "MTH/MTH.h"
-
+#include <time.h>
 LRESULT CALLBACK MyWindowFunc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, CHAR *CmdLine, INT ShawCmd)
@@ -102,11 +102,14 @@ LRESULT CALLBACK MyWindowFunc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
   HDC hDC;
   BYTE Keys[256];
   PAINTSTRUCT ps;
+  static dp3PRIM Pr; 
+
   switch (Msg)
   {
   case WM_CREATE:
     DP3_RndInit(hWnd);
     SetTimer(hWnd, 47, 2, NULL);
+    DP3_RndPrimLoad(&Pr, "cow.object"); 
     return 0;
   case WM_SIZE:
     DP3_RndResize(LOWORD(lParam), HIWORD(lParam));
@@ -115,6 +118,10 @@ LRESULT CALLBACK MyWindowFunc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
   case WM_TIMER:
     DP3_RndStart();
     //DP3_RndEnd();
+    DP3_RndCamSet(VecSet(0, 0, 20), VecSet(0, 0, 0), VecSet(0, 1, 0) );
+    Pr.Trans = MatrMulMatr(Pr.Trans, MatrRotateY(45 * (DBL)(clock()/1000)));
+    Pr.Trans = MatrMulMatr(Pr.Trans, MatrTranslate(VecSet(100 * sin(clock()/1000), 0, 0)));
+    DP3_RndPrimDraw(&Pr, Pr.Trans);
     hDC = GetDC(hWnd);  
     DP3_RndCopyFrame(hDC);
     ReleaseDC(hWnd, hDC);
