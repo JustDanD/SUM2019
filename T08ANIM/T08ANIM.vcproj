@@ -193,6 +193,30 @@
 			<Filter
 				Name="Animation System"
 				>
+				<File
+					RelativePath=".\ANIM\ANIM.c"
+					>
+				</File>
+				<File
+					RelativePath=".\ANIM\ANIM.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ANIM\RND\RNDPRIM.C"
+					>
+				</File>
+				<File
+					RelativePath=".\ANIM\TIMER.C"
+					>
+				</File>
+				<File
+					RelativePath=".\ANIM\TIMER.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ANIM\UNITS.c"
+					>
+				</File>
 				<Filter
 					Name="Rendering System"
 					>
@@ -208,10 +232,6 @@
 						RelativePath=".\ANIM\RND\RNDDATA.C"
 						>
 					</File>
-					<File
-						RelativePath=".\ANIM\RND\RNDPRIM.C"
-						>
-					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -219,6 +239,22 @@
 				>
 				<File
 					RelativePath=".\MAIN.C"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="UNIT"
+				>
+				<File
+					RelativePath=".\UNIT\U_COW.C"
+					>
+				</File>
+				<File
+					RelativePath=".\UNIT\U_CTRL.C"
+					>
+				</File>
+				<File
+					RelativePath=".\UNITS.H"
 					>
 				</File>
 			</Filter>

@@ -109,7 +109,7 @@ LRESULT CALLBACK MyWindowFunc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
   case WM_CREATE:
     DP3_RndInit(hWnd);
     SetTimer(hWnd, 47, 2, NULL);
-    DP3_RndPrimLoad(&Pr, "cow.object"); 
+    DP3_RndPrimLoad(&Pr, "IronMan.obj"); 
     return 0;
   case WM_SIZE:
     DP3_RndResize(LOWORD(lParam), HIWORD(lParam));
@@ -118,9 +118,10 @@ LRESULT CALLBACK MyWindowFunc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
   case WM_TIMER:
     DP3_RndStart();
     //DP3_RndEnd();
-    DP3_RndCamSet(VecSet(0, 0, 20), VecSet(0, 0, 0), VecSet(0, 1, 0) );
-    Pr.Trans = MatrMulMatr(Pr.Trans, MatrRotateY(45 * (DBL)(clock()/1000)));
-    Pr.Trans = MatrMulMatr(Pr.Trans, MatrTranslate(VecSet(100 * sin(clock()/1000), 0, 0)));
+    DP3_RndCamSet(VecSet(10, 20, 50), VecSet(0, 0, 0), VecSet(0, 1, 0));
+    
+    Pr.Trans = MatrMulMatr(Pr.Trans, MatrRotateY(10));
+    //Pr.Trans = MatrMulMatr(Pr.Trans, MatrTranslate(VecSet(10 * sin(clock()/1000), 0, 0)));
     DP3_RndPrimDraw(&Pr, Pr.Trans);
     hDC = GetDC(hWnd);  
     DP3_RndCopyFrame(hDC);
