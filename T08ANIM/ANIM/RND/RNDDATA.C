@@ -1,5 +1,15 @@
+/*  *FILENAME: RNDDATA.C 
+    *PROGRAMMER: Pimenov Danila
+    *DATE: 11.06.2019 
+    *PURPOSE: project*/
+
 #include "Z:/SUM2019/T08ANIM/DEF.H"
-#include "RND.H"
+#include <windows.h>
+
+#include <time.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 DBL
   DP3_RndProjSize = 0.1,  /* Project plane fit square */

@@ -1,10 +1,6 @@
-
-
-typedef struct tagUNIT UNIT;
-struct tagUNIT
-{
-  VOID (*Init)( UNIT *Uni, ANIM *Ani );
-  VOID (*Close)( UNIT *Uni, ANIM *Ani );
-  VOID (*Response)( UNIT *Uni, ANIM *Ani );
-  VOID (*Render)( UNIT *Uni, ANIM *Ani );
-};
+/*  *FILENAME: ANIM.h 
+    *PROGRAMMER: Pimenov Danila
+    *DATE: 11.06.2019 
+    *PURPOSE: project*/
+ 
+dp3UNIT * DP3_ANIMUnitCowCreate( VOID );

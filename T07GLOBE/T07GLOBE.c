@@ -46,7 +46,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, CHAR *CmdLine, 
     return 0;
   }
   hWnd = CreateWindow(WND_CLASS_NAME, "OKNO", WS_OVERLAPPEDWINDOW,
-    -1200, 0,
+    0, 0,
     900, 900,
     NULL, NULL, hInstance, NULL);
   ShowWindow(hWnd, SW_SHOWNORMAL);

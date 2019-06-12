@@ -1,13 +1,16 @@
-/* *FILE NAME: MTH.H
+/* *FILE NAME: RNDBASE.H
    *PRORAMMER: Danila Pimenov
    *DATE: 10.06.2019
    *PURPOSE: WinAPI
 */
 
-#include <stdlib.h>
 #include <windows.h>
-#include "Z:/SUM2019/T08ANIM/DEF.H"
-#include "Z:/SUM2019/T08ANIM/MTH/MTH.H"
+
+#include <time.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "RND.H"
 
 VOID DP3_RndInit( HWND hWnd )

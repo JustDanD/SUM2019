@@ -1,7 +1,7 @@
 /* FILE NAME   : DEF.H
  * PURPOSE     : WinAPI animation system.
  *               Base definitions.
- * PROGRAMMER  : Vitaly A. Galinsky.
+ * PROGRAMMER  : Pimenov Danila.
  * LAST UPDATE : 10.06.2019.
  * NOTE        : Module prefix 'dp3'.
  */
@@ -10,6 +10,7 @@
 #define __DEF_H_
 
 #pragma warning(disable: 4244 4305)
+
 
 /* Debug memory allocation support */
 #ifdef _DEBUG
@@ -21,10 +22,9 @@
 #else /* _DEBUG */
 #  define SetDbgMemHooks() ((VOID)0)
 #endif /* _DEBUG */
-#include <stdlib.h>
-#include "ANIM/ANIM.H"
-#include "MTH/MTH.H"
 
+
+#include "MTH/MTH.H"
 
 /* 64-bit integer data types */
 typedef __int64 INT64;

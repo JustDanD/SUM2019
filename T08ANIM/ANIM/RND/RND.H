@@ -1,8 +1,17 @@
+/*  *FILENAME: ANIM.h 
+    *PROGRAMMER: Pimenov Danila
+    *DATE: 11.06.2019 
+    *PURPOSE: project*/
+
 #ifndef _RND_H_
 #define _RND_H_
-#include "Z:/SUM2019/T08ANIM/DEF.H"
 
-VOID DP3_RndInit( HWND hWnd );
+
+
+#include "../../DEF.H"
+
+
+
 
 
 typedef struct tagdp3VERTEX
@@ -38,6 +47,7 @@ extern HDC DP3_hDCRndFrame;
 extern HBITMAP DP3_hBmRndFrame;
 extern INT DP3_RndFrameW, DP3_RndFrameH;
 
+VOID DP3_RndInit( HWND hWnd );
 VOID DP3_RndProjSet( VOID );
 VOID DP3_RndCamSet( VEC Loc, VEC At, VEC Up1 );
 VOID DP3_RndCopyFrame( HDC hDC );

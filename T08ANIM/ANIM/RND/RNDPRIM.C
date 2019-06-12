@@ -4,12 +4,16 @@
    *PURPOSE: WinAPI
 */
 
+
+#include <windows.h>
+
+#include <time.h>
 #include <string.h>
 #include <stdio.h>
-#include "Z:/SUM2019/T08ANIM/DEF.H"
-#include "Z:/SUM2019/T08ANIM/MTH/MTH.H"
+#include <stdlib.h>
+
 #include "RND.H"
-#include <windows.h>
+
 
 BOOL DP3_RndPrimCreate( dp3PRIM *Pr, INT NoofV, INT NoofI )
 {

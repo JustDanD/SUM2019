@@ -202,7 +202,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\ANIM\RND\RNDPRIM.C"
+					RelativePath=".\INPUT.C"
 					>
 				</File>
 				<File
@@ -232,6 +232,10 @@
 						RelativePath=".\ANIM\RND\RNDDATA.C"
 						>
 					</File>
+					<File
+						RelativePath=".\ANIM\RND\RNDPRIM.C"
+						>
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -251,6 +255,10 @@
 				</File>
 				<File
 					RelativePath=".\UNIT\U_CTRL.C"
+					>
+				</File>
+				<File
+					RelativePath=".\UNIT\U_IRON.c"
 					>
 				</File>
 				<File

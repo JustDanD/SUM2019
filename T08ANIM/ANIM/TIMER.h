@@ -5,7 +5,7 @@
 */
 
 #ifndef _TIMER_H_
-#include <Windows.h>
+#include <windows.h>
 #define _TIMER_H_
 
 #endif

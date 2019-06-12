@@ -1,19 +1,19 @@
 /*  *FILENAME: UNITS.c 
-    *PROGRAMMER: Kiselev Igor
+    *PROGRAMMER: Pimenov Danila
     *DATE: 11.06.2019 
     *PURPOSE: project*/
-#include "../DEF.h"
+#include <windows.h>
+
+#include <time.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "Z:/SUM2019/T08ANIM/DEF.H"
+#include "ANIM.h"
 
 
-/* Unit initialization function.
- * ARGUMENTS:
- *   - self-pointer to unit object:
- *       DP3_UNIT *Uni;
- *   - animation context:
- *       DP3_ANIM *Ani;
- * RETURNS: None.
- */
-static VOID DP3_UnitInit( DP3_UNIT *Uni, DP3_ANIM *Ani )
+static VOID DP3_UnitInit( dp3UNIT *Uni, dp3ANIM *Ani )
 {
 } /* End of 'DP3_UnitInit' function */
 
@@ -25,7 +25,7 @@ static VOID DP3_UnitInit( DP3_UNIT *Uni, DP3_ANIM *Ani )
  *       DP3_ANIM *Ani;
  * RETURNS: None.
  */
-static VOID DP3_UnitClose( DP3_UNIT *Uni, DP3_ANIM *Ani )
+static VOID DP3_UnitClose( dp3UNIT *Uni, dp3ANIM *Ani )
 {
 } /* End of 'DP3_UnitClose' function */
 /* Unit inter frame events handle function.
@@ -36,7 +36,7 @@ static VOID DP3_UnitClose( DP3_UNIT *Uni, DP3_ANIM *Ani )
  *       DP3_ANIM *Ani;
  * RETURNS: None.
  */
-static VOID DP3_UnitResponse( DP3_UNIT *Uni, DP3_ANIM *Ani )
+static VOID DP3_UnitResponse( dp3UNIT *Uni, dp3ANIM *Ani )
 {
 } /* End of 'DP3_UnitResponse' function */
 
@@ -48,9 +48,10 @@ static VOID DP3_UnitResponse( DP3_UNIT *Uni, DP3_ANIM *Ani )
  *       DP3_ANIM *Ani;
  * RETURNS: None.
  */
-static VOID DP3_UnitRender( DP3_UNIT *Uni, DP3_ANIM *Ani )
+static VOID DP3_UnitRender( dp3UNIT *Uni, dp3ANIM *Ani )
 {
 } /* End of 'DP3_UnitRender' function */
+
 
 
 /* Unit creation function.
@@ -60,14 +61,14 @@ static VOID DP3_UnitRender( DP3_UNIT *Uni, DP3_ANIM *Ani )
  * RETURNS:
  *   (DP3_UNIT *) pointer to created unit.
  */
-DP3_UNIT * DP3_AnimUnitCreate( INT Size )
+dp3UNIT * DP3_AnimUnitCreate( VOID )
 {
-  DP3_UNIT *Uni;
+  dp3UNIT *Uni;
 
   /* Memory allocation */
-  if (Size < sizeof(DP3_UNIT) || (Uni = malloc(Size)) == NULL)
+  if (sizeof(dp3UNIT) < sizeof(dp3UNIT) || (Uni = malloc(sizeof(dp3UNIT))) == NULL)
     return NULL;
-  memset(Uni, 0, Size);
+  memset(Uni, 0, sizeof(dp3UNIT));
 
   /* Setup unit methods */
   Uni->Init = DP3_UnitInit;
@@ -75,19 +76,4 @@ DP3_UNIT * DP3_AnimUnitCreate( INT Size )
   Uni->Response = DP3_UnitResponse;
   Uni->Render = DP3_UnitRender;
   return Uni;
-} /* End of 'DP3_AnimUnitCreate' function */
-
-
-
-/*   Тут живёт странный и непонятный кусок функции
-static VOID DP3_UnitInit( DP3UNIT_BALL *Uni, DP3ANIM *Ani )
-{
-  Uni->Pos = VecSet(0, 1, 0);
-} 
-static VOID DP3_UnitResponse( DP3UNIT_BALL *Uni, DP3ANIM *Ani );
-{
-  Uni->Pos += Ani->DeltaTime * 2.4;
-}  */
-
-
-/* End of "UNITS.c" function */
+}

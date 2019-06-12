@@ -6,6 +6,7 @@
 
 #ifndef _MATH_H
 #define _MATH_H
+
 #include <windows.h>
 #include <math.h>
 
@@ -13,6 +14,7 @@
 #define D2R(A) ((A) * (PI / 180.0))
 #define Degree2Radian(a) D2R(a)
 #define MatrMulMatr3(A, B, C) MatrMulMatr(MatrMulMatr(A, B), C)
+
 typedef double DBL;
 
 typedef struct
