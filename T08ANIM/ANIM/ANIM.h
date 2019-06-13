@@ -66,16 +66,14 @@ typedef struct tagDP3_UNIT
 
 VOID TimerResponse(VOID);
 VOID TimerInit(VOID);
-extern dp3ANIM DP3_ANIM;
+extern dp3ANIM DP3_Anim;
 VOID DP3_AnimInit( HWND hWnd );
 VOID DP3_AnimClose( VOID );
 VOID DP3_AnimRender( VOID );
 VOID DP3_AnimResize( INT W, INT H);
 VOID DP3_AnimCopyFrame( HDC hDC );
 VOID DP3_AnimAddUnit( dp3UNIT *Uni );
-
-
-
+VOID DP3_AnimFlipFullScreen(HWND hWnd);
 #endif
 
 /* End of "ANIM.h" function */

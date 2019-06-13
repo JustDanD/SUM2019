@@ -6,7 +6,7 @@
 #include "Z:/SUM2019/T08ANIM/DEF.H"
 #include "../ANIM/ANIM.h"
 #include "../ANIM/RND/RND.H"
-#include "../ANIM/TIMER.H"
+
 typedef struct 
 {
   UNIT_BASE;
@@ -42,7 +42,7 @@ static VOID DP3_UnitClose( dp3UNIT_COW *Uni, dp3ANIM *Ani )
 static VOID DP3_UnitResponse( dp3UNIT_COW *Uni, dp3ANIM *Ani )
 {
   //Uni->cow.Trans = MatrMulMatr(Uni->cow.Trans, MatrScale(VecSet(0.8, 0.8, 0.8)));
-  Uni->cow.Trans = MatrMulMatr(Uni->cow.Trans, MatrRotateY(20 * DP3_ANIM.Time));
+  Uni->cow.Trans = MatrMulMatr(Uni->cow.Trans, MatrRotateY(20 * DP3_Anim.Time));
 } /* End of 'DP3_UnitResponse' function */
 
 /* Unit render function.
@@ -57,8 +57,10 @@ static VOID DP3_UnitRender( dp3UNIT_COW *Uni, dp3ANIM *Ani )
 {
   TimerResponse();
   DP3_InputRespons();
+  if (DP3_Anim.Keys['F'] && DP3_Anim.KeysClick['F'])
+    DP3_AnimFlipFullScreen(DP3_Anim.hWnd);
   DP3_RndCamSet(VecSet(0, 6, 100), VecSet(0, 0, 0), VecSet(0, 1, 0) );
-  DP3_RndPrimDraw(&Uni->cow, MatrTranslate(VecSet(20 * DP3_ANIM.JX, 0, 0)));
+  DP3_RndPrimDraw(&Uni->cow, MatrTranslate(VecSet(20 * DP3_Anim.JX, 0, 0)));
 } /* End of 'DP3_UnitRender' function */
 
 

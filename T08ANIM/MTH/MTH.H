@@ -28,7 +28,7 @@ typedef struct
 }MATR;
 
 
-__inline VEC VecSet(DBL X, DBL Y, DBL Z)
+__inline VEC VecSet(FLT X, FLT Y, FLT Z)
 {
   VEC v = { X, Y, Z };
 
